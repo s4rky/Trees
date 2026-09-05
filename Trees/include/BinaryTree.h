@@ -41,7 +41,7 @@ public:
     /**
      @brief Searches for the lowest common ancestor of any 2 nodes in the Binary Tree.
      */
-    const TreeNode<T>& lowestCommonAncestor(const TreeNode<T>& node1, const TreeNode<T>& node2) const;
+    const TreeNode<T>* lowestCommonAncestor(const TreeNode<T>* node1, const TreeNode<T>* node2) const;
     
     /**
      @brief Inverts the Binary Tree. If called an even number of times, the original tree structure will be preserved.
@@ -146,10 +146,20 @@ private:
      */
     int calculateHeight(TreeNode<T>* root) const;
     
+    /**
+     @brief Returns true if node is present in the Binary Tree.
+     */
+    bool inTree(const TreeNode<T>* root) const;
+    
+    /**
+     @brief Helper that traverses the Binary Tree for a given target and mutates an input vector.
+     */
+    bool traverseForPath(const TreeNode<T>* root, const T& target, std::vector<T>& path) const;
+    
     // Member Variables
     std::unique_ptr<TreeNode<T>> root;
     std::vector<T> levelOrderVector;
-    std::set<TreeNode<T>*> nodeSet;
+    std::set<const TreeNode<T>*> nodeSet;
     int height;
 };
 

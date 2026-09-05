@@ -16,9 +16,19 @@ using namespace std;
 
 int main(int argc, const char * argv[])
 {
-    vector<optional<int>> treeTest = {1,2,3,nullopt,nullopt,4,5,nullopt,nullopt,nullopt,nullopt};
+    vector<optional<int>> treeTest = {3,5,1,6,2,0,8,nullopt,nullopt,7,4};
     BinaryTree<int> Bt_1(treeTest);
     Bt_1.printTree();
-    cout << Bt_1.getHeight() << endl;
+    auto levels = Bt_1.levelOrderTraversal();
+    for (const auto& level: levels)
+    {
+        cout << "[" << "";
+        for (const auto& node: level)
+        {
+            
+            cout << node << " ";
+        }
+        cout << "]" << endl;
+    }
     return 0;
 }

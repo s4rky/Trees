@@ -62,6 +62,59 @@ const TreeNode<T>* BinaryTree<T>::getRoot() const
 }
 
 template <typename T>
+bool BinaryTree<T>::inTree(const TreeNode<T>* root) const
+{
+    auto found = nodeSet.find(root) != nodeSet.end();
+    return found;
+}
+
+template <typename T>
+bool BinaryTree<T>::traverseForPath(const TreeNode<T>* root, const T& target, std::vector<T>& path) const
+{
+    if (!root)
+    {
+        return false;
+    }
+    if (root->val == target)
+    {
+        path.push_back(root->val);
+        return true;
+    }
+    path.push_back(root->val);
+    if (traverseForPath(root->left.get(), target, path) || traverseForPath(root->right.get(), target, path))
+    {
+        return true;
+    }
+    path.pop_back();
+    return false;
+}
+
+template <typename T>
+const TreeNode<T>* BinaryTree<T>::lowestCommonAncestor(const TreeNode<T>* node1, const TreeNode<T>* node2) const
+{
+    if (!root || !inTree(node1) || !inTree(node2))
+    {
+        return nullptr;
+    }
+    std::vector<T> node1Vec;
+    traverseForPath(root.get(), node1->val, node1Vec);
+    std::vector<T> node2Vec;
+    traverseForPath(root.get(), node2->val, node2Vec);
+    size_t n1Ptr = 0;
+    size_t n2Ptr = 0;
+    size_t n1Size = node1Vec.size();
+    size_t n2Size = node2Vec.size();
+    
+    while ((n1Ptr < n1Size - 1 && n2Ptr < n2Size - 1) && (node1Vec[n1Ptr + 1] == node2Vec[n2Ptr + 1]))
+    {
+        n1Ptr++;
+        n2Ptr++;
+    }
+    
+    return node1Vec[n1Ptr];
+}
+
+template <typename T>
 std::string BinaryTree<T>::treeToString(const std::vector<T>& levelOrderVector) const
 {
     std::string treeAsString = "";
@@ -104,6 +157,42 @@ int BinaryTree<T>::getHeight()
 {
     height = calculateHeight(root.get());
     return height;
+}
+
+template <typename T>
+std::vector<std::vector<T>> BinaryTree<T>::levelOrderTraversal()
+{
+    std::vector<std::vector<T>> levels;
+    if (!root)
+    {
+        return levels;
+    }
+    
+    std::queue<TreeNode<T>*> q;
+    q.push(root.get());
+    levels.push_back({root->val});
+    while (!q.empty())
+    {
+        const size_t size = q.size();
+        std::vector<T> level;
+        for (size_t i = 0; i < size; i++)
+        {
+            TreeNode<T>* front = q.front();
+            q.pop();
+            if (front->left)
+            {
+                q.push(front->left.get());
+                level.push_back(front->left->val);
+            }
+            if (front->right)
+            {
+                q.push(front->right.get());
+                level.push_back(front->right->val);
+            }
+        }
+        levels.push_back(level);
+    }
+    return levels;
 }
 
 template class BinaryTree<int>;
