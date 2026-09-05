@@ -1,0 +1,142 @@
+TREE LIBRARY — FUNCTIONAL REQUIREMENTS
+
+1. GENERIC BINARY TREE
+----------------------
+- Create tree
+- Insert node
+- Remove node
+- Search
+- Get root
+- Get size
+- Get height
+- Get depth
+- Get max diameter
+- Get max path sum
+- Count leaves
+- Count internal nodes
+- Check empty
+- Clear tree
+- Clone tree (Deep copy)
+- Compare trees
+- Lowest common ancestor (LCA) of 2 Nodes
+- Mirror / invert tree
+- Path Sum to return all root to leaf paths that sum up to a target
+
+
+2. TRAVERSALS
+-------------
+- Preorder
+- Inorder
+- Postorder
+- Level-order / BFS
+- Iterative traversals
+- Recursive traversals
+- Traversal with callback / function
+- Return traversal as vector<T>
+
+
+3. BINARY SEARCH TREE (BST) (Inherits fron BT)
+---------------------------
+- Insert
+- Search
+- Delete
+- Find minimum
+- Find maximum
+- Find successor
+- Find predecessor
+- Find kth smallest
+- Find kth largest
+- Validate BST
+- Lowest common ancestor (LCA) of 2 Nodes
+- Range query
+
+
+4. AVL TREE (Inherits from BT)
+-----------
+- Insert
+- Delete
+- Search
+- Balance factor
+- Height maintenance
+- LL rotation
+- RR rotation
+- LR rotation
+- RL rotation
+- Automatic rebalancing
+
+
+5. SERIALIZATION
+----------------
+- Serialize to string
+- Deserialize from string
+- BFS serialization
+- DFS serialization
+- Empty-tree serialization
+- Structural equality after round-trip
+
+
+6. TREE ALGORITHMS
+------------------
+- Diameter
+- Maximum depth
+- Minimum depth
+- Maximum path sum
+- Path sum
+- Root-to-leaf paths
+- Lowest common ancestor
+- Symmetry check
+- Balanced check
+- Subtree detection
+- Same-tree check
+- Deepest nodes
+- Width
+- Left view
+- Right view
+- Boundary traversal
+- Vertical traversal
+
+
+7. GENERICITY
+-------------
+- template <typename T>
+- Custom comparator
+- Custom equality
+- Support custom user-defined types
+
+
+8. MEMORY / OWNERSHIP
+---------------------
+- std::unique_ptr
+- Move semantics
+- Deep copy
+- Copy constructor
+- Move constructor
+- Copy assignment
+- Move assignment
+- Non-owning node access
+
+
+9. UTILITY
+----------
+- Pretty-print tree
+- Generate random tree
+- Generate balanced tree
+- Generate skewed tree
+- Export tree representation
+- Import tree representation
+- Tree statistics
+
+
+10. TESTING
+-----------
+- Empty tree
+- Single-node tree
+- Balanced tree
+- Left-skewed tree
+- Right-skewed tree
+- Duplicate values
+- Large tree
+- Randomized testing
+- Serialization round-trip testing
+- BST invariant testing
+- AVL balance invariant testing
