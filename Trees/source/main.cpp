@@ -30,5 +30,31 @@ int main(int argc, const char * argv[])
     cout << "Preorder Traversal: " << Bt_1.traverse(BinaryTree<int>::Traversal::Preorder) << endl;
     cout << "Postorder Traversal: " << Bt_1.traverse(BinaryTree<int>::Traversal::Postorder) << endl;
     cout << "Level Order Traversal: " << Bt_1.traverse(BinaryTree<int>::Traversal::Levelorder) << endl;
+    
+    cout << "BFS before insertion of value: " << endl;
+    auto levels = Bt_1.levelOrderTraversal();
+    for (const auto& level: levels)
+    {
+        cout << "[" << " ";
+        for (const auto& node: level)
+        {
+            cout << node << ", ";
+        }
+        cout << "]" << endl;
+        
+    }
+    Bt_1.insertNode(20);
+    cout << "BFS after insertion of value: " << endl;
+    levels = Bt_1.levelOrderTraversal();
+    for (const auto& level: levels)
+    {
+        cout << "[" << " ";
+        for (const auto& node: level)
+        {
+            cout << node << ", ";
+        }
+        cout << "]" << endl;
+        
+    }
     return 0;
 }

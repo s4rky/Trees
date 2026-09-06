@@ -148,6 +148,71 @@ const TreeNode<T>* BinaryTree<T>::lowestCommonAncestor(const TreeNode<T>* node1,
     return node1Vec[n1Ptr];
 }
 
+
+template <typename T>
+TreeNode<T>* BinaryTree<T>::invertTree(TreeNode<T>* root)
+{
+    if (!root)
+    {
+        return nullptr;
+    }
+    std::swap(root->left, root->right);
+    invertTree(root->left.get());
+    invertTree(root->right.get());
+    return root;
+}
+
+template <typename T>
+void BinaryTree<T>::invertBinaryTree()
+{
+    invertTree(root.get());
+}
+
+template <typename T>
+void BinaryTree<T>::insertNode(const T& val)
+{
+    if (!root)
+    {
+        return;
+    }
+    auto node = std::make_unique<TreeNode<T>>(val);
+    
+    std::queue<TreeNode<T>*> q;
+    q.push(root.get());
+    while (!q.empty())
+    {
+        const size_t size = q.size();
+        for (size_t i = 0; i < size; i++)
+        {
+            TreeNode<T>* front = q.front();
+            q.pop();
+            
+            if (!front->left)
+            {
+                front->left = std::move(node);
+                nodeSet.insert(front->left.get());
+                levelOrderVector.push_back(front->left->val);
+                return;
+            }
+            if (!front->right)
+            {
+                front->right = std::move(node);
+                nodeSet.insert(front->right.get());
+                levelOrderVector.push_back(front->right->val);
+                return;
+            }
+            if (front->left)
+            {
+                q.push(front->left.get());
+            }
+            if (front->right)
+            {
+                q.push(front->right.get());
+            }
+        }
+    }
+}
+
 template <typename T>
 std::string BinaryTree<T>::treeToString(const std::vector<T>& levelOrderVector) const
 {
@@ -312,6 +377,7 @@ void BinaryTree<T>::postorder(const TreeNode<T>* root, std::vector<const TreeNod
 template <typename T>
 std::vector<T> BinaryTree<T>::inorderTraversal()
 {
+    inorderVec.clear();
     inorder(root.get(),inorderVec);
     
     std::vector<T> values;
@@ -326,6 +392,7 @@ std::vector<T> BinaryTree<T>::inorderTraversal()
 template <typename T>
 std::vector<T> BinaryTree<T>::postorderTraversal()
 {
+    postorderVec.clear();
     postorder(root.get(),postorderVec);
     
     std::vector<T> values;
@@ -340,6 +407,7 @@ std::vector<T> BinaryTree<T>::postorderTraversal()
 template <typename T>
 std::vector<T> BinaryTree<T>::preorderTraversal() 
 {
+    preorderVec.clear();
     preorder(root.get(),preorderVec);
     
     std::vector<T> values;

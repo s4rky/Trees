@@ -56,17 +56,20 @@ public:
      */
     const TreeNode<T>* lowestCommonAncestor(const TreeNode<T>* node1, const TreeNode<T>* node2) const;
     
+    /**
+     @brief Uses search() and returns the pointer to a specific value being searched for in the Binary Tree.
+     */
     const TreeNode<T>* getNode(const T& val) const;
     
     /**
-     @brief Inverts the Binary Tree. If called an even number of times, the original tree structure will be preserved.
+     @brief Public API to invert the Binary Tree.
      */
-    TreeNode<T>* invertTree(TreeNode<T>* root);
+    void invertBinaryTree();
     
     /**
-     @brief Insert node into the Binary Tree.
+     @brief Insert value into the Binary Tree. The goal is to create a perfect and complete Binary Tree, hence why the insertion is done through a BFS.
      */
-    void insertNode();
+    void insertNode(const T& val);
     
     /**
      @brief Remove node from the Binary Tree.
@@ -206,6 +209,11 @@ private:
      @brief Helper to construct postorder traversal vector of Binary Tree.
      */
     void postorder(const TreeNode<T>* root, std::vector<const TreeNode<T>*>& postorderVec);
+    
+    /**
+     @brief Inverts the Binary Tree. If called an even number of times, the original tree structure will be preserved.
+     */
+    TreeNode<T>* invertTree(TreeNode<T>* root);
     
     /**
      @todo Add this to a utils class or something
