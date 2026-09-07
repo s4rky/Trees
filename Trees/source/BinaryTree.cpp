@@ -376,6 +376,27 @@ std::vector<std::vector<T>> BinaryTree<T>::pathsThatSumTo(const T& target)
 
 
 template <typename T>
+bool BinaryTree<T>::isSameTree(const TreeNode<T>* root1, const TreeNode<T>* root2) const
+{
+    if (!root1 && !root2)
+    {
+        return true;
+    }
+    bool isImbalanced = (!root1 || !root2);
+    bool diffValues = (root1 && root2) && (root1->val != root2->val);
+    if (isImbalanced || diffValues)
+    {
+        return false;
+    }
+    return isSameTree(root1->left.get(), root2->left.get()) && isSameTree(root1->right.get(), root2->right.get());
+}
+
+template <typename T>
+bool BinaryTree<T>::isSameAs(const TreeNode<T>* tree) const
+{
+    return isSameTree(root.get(), tree);
+}
+template <typename T>
 void BinaryTree<T>::inorder(const TreeNode<T>* root, std::vector<const TreeNode<T>*> &inorderVec)
 {
     if (!root)
@@ -502,6 +523,45 @@ std::string BinaryTree<T>::traverse(const Traversal traversalType)
         default:
             return "";
     }
+}
+
+template <typename T>
+const bool BinaryTree<T>::isEmpty() const
+{
+    return nodeSet.empty();
+}
+
+template <typename T>
+const int BinaryTree<T>::getSize() const
+{
+    return static_cast<int>(levelOrderVector.size());
+}
+
+template <typename T>
+void BinaryTree<T>::deleteAllExceptRoot(TreeNode<T>* root)
+{
+    if (!root)
+    {
+        return;
+    }
+    deleteAllExceptRoot(root->left.get());
+    deleteAllExceptRoot(root->right.get());
+    if (nodeSet.size() > 1)
+    {
+        nodeSet.erase(root->left.get());
+        nodeSet.erase(root->right.get());
+    }
+    if (levelOrderVector.size() > 1)
+    {
+        levelOrderVector.pop_back();
+    }
+    root->left = nullptr;
+    root->right = nullptr;
+}
+template <typename T>
+void BinaryTree<T>::clearTree()
+{
+    deleteAllExceptRoot(root.get());
 }
 
 template class BinaryTree<int>;

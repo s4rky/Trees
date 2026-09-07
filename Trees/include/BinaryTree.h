@@ -77,14 +77,9 @@ public:
     void removeNode();
     
     /**
-     @brief Clear the Binary Tree.
+     @brief Clear the Binary Tree. Preserves the root, but deletes everything else.
      */
     void clearTree();
-    
-    /**
-     @brief Clone the Binary Tree (Deep Copy).
-     */
-    void cloneTree();
     
     /**
      @brief Print a level order string representation of the Binary Tree.
@@ -117,14 +112,14 @@ public:
     const int getNumLeaves() const;
     
     /**
-     @brief Return true if Binary Tree is empty.
+     @brief Return true if compared Tree is equal.
      */
-    bool isEmpty();
+    bool isSameAs(const TreeNode<T>* tree) const;
     
     /**
-     @brief Return true if 2 comared trees are identical.
+     @brief Return true if Binary Tree is empty.
      */
-    bool isSameTree(TreeNode<T>& root);
+    const bool isEmpty() const;
     
     /**
      @brief Public API that traverses the Binary Tree based on input string.
@@ -225,6 +220,16 @@ private:
      @brief Helper that constructs a vector with numeric values that sum up to a target in the Binary Tree. Used by public pathsThatSumTo() API.
      */
     void constructPathForTargetSum(const TreeNode<T>* root, const T& targetSum, std::vector<T>& path, std::vector<std::vector<T>>& paths, T currSum);
+    
+    /**
+     @brief Return true if 2 comared trees are identical.
+     */
+    bool isSameTree(const TreeNode<T>* root1, const TreeNode<T>* root2) const;
+    
+    /**
+     @brief Helper to clear the Binary Tree.
+     */
+    void deleteAllExceptRoot(TreeNode<T>* root);
     
     // Member Variables
     std::unique_ptr<TreeNode<T>> root;

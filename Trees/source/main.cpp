@@ -31,31 +31,6 @@ int main(int argc, const char * argv[])
     cout << "Postorder Traversal: " << Bt_1.traverse(BinaryTree<int>::Traversal::Postorder) << endl;
     cout << "Level Order Traversal: " << Bt_1.traverse(BinaryTree<int>::Traversal::Levelorder) << endl;
     
-    cout << "BFS before insertion of value: " << endl;
-    auto levels = Bt_1.levelOrderTraversal();
-    for (const auto& level: levels)
-    {
-        cout << "[" << " ";
-        for (const auto& node: level)
-        {
-            cout << node << ", ";
-        }
-        cout << "]" << endl;
-        
-    }
-//    Bt_1.insertNode(20);
-//    cout << "BFS after insertion of value: " << endl;
-//    levels = Bt_1.levelOrderTraversal();
-//    for (const auto& level: levels)
-//    {
-//        cout << "[" << " ";
-//        for (const auto& node: level)
-//        {
-//            cout << node << ", ";
-//        }
-//        cout << "]" << endl;
-//        
-//    }
     int target = 14;
     auto paths = Bt_1.pathsThatSumTo(target);
     cout << "---PATHS THAT SUM TO A TARGET TEST---" << endl;
@@ -67,5 +42,21 @@ int main(int argc, const char * argv[])
         }
         cout << endl;
     }
+    
+    cout << "----TEST SAME TREE---" << endl;
+    std::cout << std::boolalpha;
+    vector<optional<int>> treeTest2 = {3,5,1,6,2,0,8,nullopt,nullopt,7,4};
+    BinaryTree<int> Bt_2(treeTest2);
+    cout << Bt_1.isSameAs(Bt_2.getRoot()) << endl;
+    vector<optional<int>> treeTest3 = {3,5,1,6,2,0,8,nullopt,nullopt,7,7};
+    BinaryTree<int> Bt_3(treeTest3);
+    cout << Bt_1.isSameAs(Bt_3.getRoot()) << endl;
+    
+    cout << "---TEST CLEAR TREE---" << endl;
+    Bt_1.printTree();
+    Bt_1.clearTree();
+    Bt_1.printTree();
+    cout << "Cleared Successfully: " << (Bt_1.getHeight() == 1) << endl;
+    
     return 0;
 }
