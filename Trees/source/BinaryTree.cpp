@@ -341,6 +341,41 @@ const T BinaryTree<T>::getMaxPathSum()
 }
 
 template <typename T>
+void BinaryTree<T>::constructPathForTargetSum(const TreeNode<T>* root, const T& targetSum, std::vector<T>& path, std::vector<std::vector<T>>& paths, T currSum)
+{
+    if (!root)
+    {
+        return;
+    }
+    path.push_back(root->val);
+    currSum += root->val;
+    if (!root->left && !root->right)
+    {
+        if (currSum == targetSum)
+            paths.push_back(path);
+        path.pop_back();
+        return;
+    }
+    constructPathForTargetSum(root->left.get(), targetSum, path, paths, currSum);
+    constructPathForTargetSum(root->right.get(), targetSum, path, paths, currSum);
+    path.pop_back();
+}
+
+template <typename T>
+std::vector<std::vector<T>> BinaryTree<T>::pathsThatSumTo(const T& target)
+{
+    std::vector<std::vector<T>> paths;
+    if (!root)
+    {
+        return paths;
+    }
+    std::vector<T> path;
+    constructPathForTargetSum(root.get(), target, path, paths, T{});
+    return paths;
+}
+
+
+template <typename T>
 void BinaryTree<T>::inorder(const TreeNode<T>* root, std::vector<const TreeNode<T>*> &inorderVec)
 {
     if (!root)

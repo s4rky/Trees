@@ -43,18 +43,29 @@ int main(int argc, const char * argv[])
         cout << "]" << endl;
         
     }
-    Bt_1.insertNode(20);
-    cout << "BFS after insertion of value: " << endl;
-    levels = Bt_1.levelOrderTraversal();
-    for (const auto& level: levels)
+//    Bt_1.insertNode(20);
+//    cout << "BFS after insertion of value: " << endl;
+//    levels = Bt_1.levelOrderTraversal();
+//    for (const auto& level: levels)
+//    {
+//        cout << "[" << " ";
+//        for (const auto& node: level)
+//        {
+//            cout << node << ", ";
+//        }
+//        cout << "]" << endl;
+//        
+//    }
+    int target = 14;
+    auto paths = Bt_1.pathsThatSumTo(target);
+    cout << "---PATHS THAT SUM TO A TARGET TEST---" << endl;
+    for (const auto& path: paths)
     {
-        cout << "[" << " ";
-        for (const auto& node: level)
+        for (const auto& val: path)
         {
-            cout << node << ", ";
+            cout << val << " ";
         }
-        cout << "]" << endl;
-        
+        cout << endl;
     }
     return 0;
 }

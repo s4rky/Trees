@@ -141,7 +141,7 @@ public:
      @brief Returns a vector of vectors that return all root-to-leaf paths that add up to a target sum.
      @param target The target sum.
      */
-    std::vector<std::vector<int>> pathsThatSumTo(const int& target);
+    std::vector<std::vector<T>> pathsThatSumTo(const T& target);
     
     /**
      @brief Returns a vectoral representation of a Breadth-First-Search (BFS).
@@ -220,6 +220,11 @@ private:
      @brief Helper to turn a vector into a string.
      */
     std::string vecToString(const std::vector<T> vec);
+    
+    /**
+     @brief Helper that constructs a vector with numeric values that sum up to a target in the Binary Tree. Used by public pathsThatSumTo() API.
+     */
+    void constructPathForTargetSum(const TreeNode<T>* root, const T& targetSum, std::vector<T>& path, std::vector<std::vector<T>>& paths, T currSum);
     
     // Member Variables
     std::unique_ptr<TreeNode<T>> root;
