@@ -92,7 +92,7 @@ bool BinaryTree<T>::traverseForPath(const TreeNode<T>* root, const TreeNode<T>* 
 }
 
 template <typename T>
-std::pair<bool,const TreeNode<T>*> BinaryTree<T>::search(const TreeNode<T>* root, const T& val) const
+std::pair<bool,TreeNode<T>*> BinaryTree<T>::search(TreeNode<T>* root, const T& val) const
 {
     if (!root)
     {
@@ -118,7 +118,7 @@ std::pair<bool,const TreeNode<T>*> BinaryTree<T>::search(const TreeNode<T>* root
     return {false, nullptr};
 }
 template <typename T>
-const TreeNode<T>* BinaryTree<T>::getNode(const T& val) const
+TreeNode<T>* BinaryTree<T>::getNode(const T& val) const
 {
     return search(root.get(), val).second;
 }
@@ -171,12 +171,14 @@ void BinaryTree<T>::invertBinaryTree()
 template <typename T>
 void BinaryTree<T>::insertNode(const T& val)
 {
+    auto node = std::make_unique<TreeNode<T>>(val);
     if (!root)
     {
+        root = std::move(node);
+        nodeSet.insert(root.get());
+        levelOrderVector.push_back(root->val);
         return;
     }
-    auto node = std::make_unique<TreeNode<T>>(val);
-    
     std::queue<TreeNode<T>*> q;
     q.push(root.get());
     while (!q.empty())
@@ -563,6 +565,57 @@ void BinaryTree<T>::clearTree()
 {
     deleteAllExceptRoot(root.get());
 }
+
+
+template <typename T>
+void BinaryTree<T>::remove(const T& val)
+{
+    auto toDelete = getNode(val);
+    if (!root || !toDelete)
+    {
+        return;
+    }
+    std::queue<TreeNode<T>*> q;
+    q.push(root.get());
+    TreeNode<T>* rightMost = root.get();
+    TreeNode<T>* parent = root.get();
+    
+    while (!q.empty())
+    {
+        const size_t size = q.size();
+        for (size_t i = 0; i < size; i++)
+        {
+            auto curr = q.front();
+            rightMost = curr;
+            q.pop();
+            // last node with left or right child is the parent
+            if (curr->left || curr->right)
+            {
+                parent = curr;
+            }
+            if (curr->left)
+            {
+                q.push(curr->left.get());
+            }
+            if (curr->right)
+            {
+                q.push(curr->right.get());
+            }
+        }
+    }
+    toDelete->val = rightMost->val;
+    if (parent->left.get() == rightMost)
+    {
+        parent->left = nullptr;
+    }
+    else
+    {
+        parent->right = nullptr;
+    }
+    nodeSet.erase(toDelete);
+    std::erase(levelOrderVector, toDelete->val);
+}
+
 
 template class BinaryTree<int>;
 template class BinaryTree<double>;

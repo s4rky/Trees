@@ -49,7 +49,7 @@ public:
      @brief Searches for a value in a Binary Tree. If found, returns pointer to the value. If not found, return nullptr.
      @param val The value that is being searched for.
      */
-    std::pair<bool, const TreeNode<T>*> search(const TreeNode<T>* root, const T& val) const;
+    std::pair<bool, TreeNode<T>*> search(TreeNode<T>* root, const T& val) const;
     
     /**
      @brief Searches for the lowest common ancestor of any 2 nodes in the Binary Tree.
@@ -59,7 +59,7 @@ public:
     /**
      @brief Uses search() and returns the pointer to a specific value being searched for in the Binary Tree.
      */
-    const TreeNode<T>* getNode(const T& val) const;
+    TreeNode<T>* getNode(const T& val) const;
     
     /**
      @brief Public API to invert the Binary Tree.
@@ -74,7 +74,7 @@ public:
     /**
      @brief Remove node from the Binary Tree.
      */
-    void removeNode();
+    void remove(const T& val);
     
     /**
      @brief Clear the Binary Tree. Preserves the root, but deletes everything else.
@@ -230,6 +230,7 @@ private:
      @brief Helper to clear the Binary Tree.
      */
     void deleteAllExceptRoot(TreeNode<T>* root);
+
     
     // Member Variables
     std::unique_ptr<TreeNode<T>> root;

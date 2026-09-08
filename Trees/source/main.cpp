@@ -52,6 +52,12 @@ int main(int argc, const char * argv[])
     BinaryTree<int> Bt_3(treeTest3);
     cout << Bt_1.isSameAs(Bt_3.getRoot()) << endl;
     
+    cout << "---TEST DELETION---" << endl;
+    cout << "Before deletion (inorder): " << Bt_1.traverse(BinaryTree<int>::Traversal::Inorder) << endl;
+    Bt_1.remove(5);
+    cout << "After deletion (inorder): " << Bt_1.traverse(BinaryTree<int>::Traversal::Inorder) << endl;
+    
+    
     cout << "---TEST CLEAR TREE---" << endl;
     Bt_1.printTree();
     Bt_1.clearTree();
