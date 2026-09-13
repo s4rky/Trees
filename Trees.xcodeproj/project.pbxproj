@@ -22,9 +22,25 @@
 		71CEDB703030EC6E00D0BD05 /* Trees */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Trees; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		711F29793057232900DB8A85 /* Exceptions for "Trees" folder in "Trees" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				source/TreeAlgorithms.tpp,
+			);
+			target = 71CEDB6F3030EC6E00D0BD05 /* Trees */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		71CEDB723030EC6E00D0BD05 /* Trees */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				711F29793057232900DB8A85 /* Exceptions for "Trees" folder in "Trees" target */,
+			);
+			explicitFileTypes = {
+				source/TreeAlgorithms.tpp = sourcecode.cpp.cpp;
+			};
 			path = Trees;
 			sourceTree = "<group>";
 		};
