@@ -17,6 +17,14 @@
 
 namespace TreeAlgos
 {
+template <typename T>
+struct BSTcandidate
+{
+    bool isValid;
+    T minVal;
+    T maxVal;
+    T sum;
+};
 
 template <typename T>
 int getHeight(const TreeNode<T>* root);
@@ -47,6 +55,15 @@ std::vector<T> postorder(const TreeNode<T>* root);
 
 template <typename T>
 std::vector<std::vector<T>> levelOrderTraversal(const TreeNode<T>* root);
+
+template <typename T>
+void flattenBinaryTree(TreeNode<T>* root);
+
+template <typename T>
+std::vector<T> morrisInorder(TreeNode<T>* root);
+
+template <typename T>
+T maxSumBST(const TreeNode<T>* root);
 
 } // namespace TreeAlgos
 

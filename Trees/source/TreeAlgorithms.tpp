@@ -157,7 +157,7 @@ namespace detail
     }
     
     template <typename T>
-    void BreadthFirstSearch(const TreeNode<T>* root, std::vector<std::vector<T>>& levels)
+    void breadthFirstSearch(const TreeNode<T>* root, std::vector<std::vector<T>>& levels)
     {
         if (!root)
         {
@@ -176,19 +176,109 @@ namespace detail
             {
                 const TreeNode<T>* front = q.front();
                 q.pop();
+                level.push_back(front->val);
                 if (front->left)
                 {
                     q.push(front->left.get());
-                    level.push_back(front->left->val);
                 }
                 if (front->right)
                 {
                     q.push(front->right.get());
-                    level.push_back(front->right->val);
                 }
             }
             levels.push_back(level);
         }
+    }
+    
+    template <typename T>
+    void flatten(TreeNode<T>* root)
+    {
+        if (!root)
+        {
+            return;
+        }
+        
+        TreeNode<T>* curr = root;
+        while (curr)
+        {
+            TreeNode<T>* CL = curr->left;
+            TreeNode<T>* CR = curr->right;
+            curr->left = nullptr;
+            if (CL)
+            {
+                curr->right = CL;
+                while (CL->right)
+                {
+                    CL = CL->right;
+                }
+                CL->right = CR;
+            }
+            curr = curr->right;
+        }
+    }
+    
+    template <typename T>
+    void morrisInorderTraversal(TreeNode<T>* root, std::vector<const TreeNode<T>*> &inorderVec)
+    {
+        TreeNode<T>* curr = root;
+        
+        while (curr)
+        {
+            if (!curr->left)
+            {
+                inorderVec.push_back(curr);
+                curr = curr->right;
+            }
+            else
+            {
+                TreeNode<T>* IP = curr->left;
+                while (IP->right && IP->right != curr)
+                {
+                    IP = IP->right;
+                }
+                if (!IP->right)
+                {
+                    IP->right = curr;
+                    curr = curr->left;
+                }
+                else
+                {
+                    IP->right = nullptr;
+                    inorderVec.push_back(curr);
+                    curr = curr->right;
+                }
+            }
+        }
+    }
+    template <typename T>
+    BSTcandidate<T> getMaxSum(const TreeNode<T>* root, T& maxSum)
+    {
+        if (!root)
+        {
+            return {false, std::numeric_limits<T>::max(), std::numeric_limits<T>::lowest(), 0};
+        }
+        BSTcandidate<T> left = getMaxSum(root->left, maxSum);
+        BSTcandidate<T> right = getMaxSum(root->right, maxSum);
+        bool isValid = (left.isValid && right.isValid)
+                    && (root->val > left.maxVal)
+                    && (root->val < right.minVal);
+        if (isValid)
+        {
+            T totalSum = root->val + left.sum + right.sum;
+            maxSum = max(maxSum, totalSum);
+            return {
+                true,
+                min(root->val, left.minVal),
+                max(root->val, right.maxVal),
+                totalSum
+            };
+        }
+        return {
+            false,
+            min(root->val,left.minVal),
+            max(root->val, right.maxVal),
+            maxSum
+        };
     }
 }
 
@@ -307,8 +397,41 @@ template <typename T>
 std::vector<std::vector<T>> levelOrderTraversal(const TreeNode<T>* root)
 {
     std::vector<std::vector<T>> levels;
-    detail::BreadthFirstSearch(root, levels);
+    detail::breadthFirstSearch(root, levels);
     return levels;
+}
+
+template <typename T>
+void flattenBinaryTree(TreeNode<T>* root)
+{
+    detail::flatten(root);
+}
+
+template <typename T>
+std::vector<T> morrisInorder(TreeNode<T>* root)
+{
+    std::vector<const TreeNode<T>*> inorderVec;
+    detail::morrisInorderTraversal(root, inorderVec);
+    
+    std::vector<T> values;
+    
+    for (const auto it: inorderVec)
+    {
+        values.push_back(it->val);
+    }
+    return values;
+}
+
+template <typename T>
+T getMaxSum(const TreeNode<T>* root)
+{
+    if (!root)
+    {
+        return T{};
+    }
+    T maxSum = 0;
+    detail::getMaxSum(root, maxSum);
+    return maxSum;
 }
 
 }
