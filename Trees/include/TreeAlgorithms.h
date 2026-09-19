@@ -14,6 +14,7 @@
 #include <queue>
 #include <sstream>
 #include <limits>
+#include <unordered_map>
 
 namespace TreeAlgos
 {
@@ -39,10 +40,10 @@ template <typename T>
 const T getMaxPathSum(const TreeNode<T> *root);
 
 template <typename T>
-TreeNode<T>* invertTree(TreeNode<T>* root);
+TreeNode<T>* invert(TreeNode<T>* root);
 
 template <typename T>
-std::vector<std::vector<T>> pathsThatSumTo(const TreeNode<T>* root, const T& target);
+std::vector<std::vector<T>> rootToLeafPathsThatSumTo(const TreeNode<T>* root, const T& target);
 
 template <typename T>
 std::vector<T> inorder(const TreeNode<T>* root);
@@ -64,6 +65,9 @@ std::vector<T> morrisInorder(TreeNode<T>* root);
 
 template <typename T>
 T maxSumBST(const TreeNode<T>* root);
+
+template <typename T>
+T allPathsThatSumTo(const TreeNode<T>* root, const int targetSum);
 
 } // namespace TreeAlgos
 

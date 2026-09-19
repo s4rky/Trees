@@ -42,7 +42,7 @@ int main(int argc, const char * argv[])
     cout << "Diameter: " << diameter << endl;
     auto maxPathSum = TreeAlgos::getMaxPathSum(BT.getRoot());
     cout << "Max Path Sum: " << maxPathSum << endl;
-    auto paths = TreeAlgos::pathsThatSumTo(BT.getRoot(), 14);
+    auto paths = TreeAlgos::rootToLeafPathsThatSumTo(BT.getRoot(), 14);
     cout << "---PATHS THAT SUM TO A TARGET TEST---" << endl;
     for (const auto& path: paths)
     {

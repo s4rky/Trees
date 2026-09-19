@@ -37,18 +37,17 @@ BinaryTree<T>::BinaryTree(const std::vector<std::optional<T>>& nodes)
         {
             TreeNode<T>* node = q.front();
             q.pop();
+            levelOrderVector.push_back(node->val);
             if (p2 < nodes.size() && nodes[p2].has_value())
             {
                 node->left = std::make_unique<TreeNode<T>>(nodes[p2].value());
                 q.push(node->left.get());
-                levelOrderVector.push_back(node->left->val);
                 nodeSet.insert(node->left.get());
             }
             if (p3 < nodes.size() && nodes[p3].has_value())
             {
                 node->right = std::make_unique<TreeNode<T>>(nodes[p3].value());
                 q.push(node->right.get());
-                levelOrderVector.push_back(node->right->val);
                 nodeSet.insert(node->right.get());
             }
             p2 += 2;

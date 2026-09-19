@@ -166,7 +166,6 @@ namespace detail
         
         std::queue<const TreeNode<T>*> q;
         q.push(root);
-        levels.push_back({root->val});
         
         while (!q.empty())
         {
@@ -193,27 +192,20 @@ namespace detail
     template <typename T>
     void flatten(TreeNode<T>* root)
     {
-        if (!root)
-        {
-            return;
-        }
-        
         TreeNode<T>* curr = root;
         while (curr)
         {
-            TreeNode<T>* CL = curr->left;
-            TreeNode<T>* CR = curr->right;
-            curr->left = nullptr;
-            if (CL)
+            if (curr->left)
             {
-                curr->right = CL;
-                while (CL->right)
+                TreeNode<T>* pred = curr->left.get();
+                while (pred->right)
                 {
-                    CL = CL->right;
+                    pred = pred->right.get();
                 }
-                CL->right = CR;
+                pred->right = std::move(curr->right);
+                curr->right = std::move(curr->left);
             }
-            curr = curr->right;
+            curr = curr->right.get();
         }
     }
     
@@ -255,10 +247,10 @@ namespace detail
     {
         if (!root)
         {
-            return {false, std::numeric_limits<T>::max(), std::numeric_limits<T>::lowest(), 0};
+            return {true, std::numeric_limits<T>::max(), std::numeric_limits<T>::lowest(), 0};
         }
-        BSTcandidate<T> left = getMaxSum(root->left, maxSum);
-        BSTcandidate<T> right = getMaxSum(root->right, maxSum);
+        BSTcandidate<T> left = getMaxSum(root->left.get(), maxSum);
+        BSTcandidate<T> right = getMaxSum(root->right.get(), maxSum);
         bool isValid = (left.isValid && right.isValid)
                     && (root->val > left.maxVal)
                     && (root->val < right.minVal);
@@ -268,17 +260,56 @@ namespace detail
             maxSum = max(maxSum, totalSum);
             return {
                 true,
-                min(root->val, left.minVal),
-                max(root->val, right.maxVal),
+                std::min(root->val, left.minVal),
+                std::max(root->val, right.maxVal),
                 totalSum
             };
         }
         return {
             false,
-            min(root->val,left.minVal),
-            max(root->val, right.maxVal),
+            std::min(root->val,left.minVal),
+            std::max(root->val, right.maxVal),
             maxSum
         };
+    }
+
+    template <typename T>
+    void getNumPaths(const TreeNode<T>* root, const T targetSum, int& numPaths, T currSum, std::unordered_map<T, int>& freq)
+    {
+        if (!root)
+        {
+            return;
+        }
+        currSum += root->val;
+        
+        auto it = freq.find(currSum - targetSum);
+        bool targetInMap = it != freq.end();
+        if (targetInMap)
+        {
+            numPaths += freq[currSum - targetSum];
+        }
+        freq[currSum]++;
+        
+        getNumPaths(root->left.get(), targetSum, numPaths, currSum, freq);
+        getNumPaths(root->right.get(), targetSum, numPaths, currSum, freq);
+        freq[currSum]--;
+        if (freq[currSum] == 0)
+        {
+            freq.erase(currSum);
+        }
+            
+    }
+    template <typename T>
+    TreeNode<T>* invertTree(TreeNode<T>* root)
+    {
+        if (!root)
+        {
+            return nullptr;
+        }
+        invertTree(root->left.get());
+        invertTree(root->right.get());
+        std::swap(root->left, root->right);
+        return root;
     }
 }
 
@@ -300,15 +331,15 @@ const TreeNode<T>* lowestCommonAncestor(const TreeNode<T>* root, const TreeNode<
 {
     if (!root)
     {
-        std::cout << "Querying a null root" << std::endl;
+//        std::cout << "Querying a null root" << std::endl;
         return nullptr;
     }
     const TreeNode<T>* LCA = detail::findLowestCommonAncestor(root, node1, node2);
     
     if (!LCA)
     {
-        std::cout << "(At least 1 of) The queried nodes are invalid" << std::endl;
-        std::cout << "Returning Root..." << std::endl;
+//        std::cout << "(At least 1 of) The queried nodes are invalid" << std::endl;
+//        std::cout << "Returning Root..." << std::endl;
         return root;
     }
     return LCA;
@@ -330,7 +361,7 @@ const T getMaxPathSum(const TreeNode<T>* root)
 }
 
 template <typename T>
-std::vector<std::vector<T>> pathsThatSumTo(const TreeNode<T>* root, const T& target)
+std::vector<std::vector<T>> rootToLeafPathsThatSumTo(const TreeNode<T>* root, const T& target)
 {
     std::vector<std::vector<T>> paths;
     if (!root)
@@ -432,6 +463,22 @@ T getMaxSum(const TreeNode<T>* root)
     T maxSum = 0;
     detail::getMaxSum(root, maxSum);
     return maxSum;
+}
+
+template <typename T>
+T allPathsThatSumTo(const TreeNode<T>* root, const int targetSum)
+{
+    int numPaths = 0;
+    std::unordered_map<T, int> freq = {{0,1}};
+    detail::getNumPaths(root, targetSum, numPaths, 0, freq);
+    return numPaths;
+    
+}
+
+template <typename T>
+TreeNode<T>* invert(TreeNode<T>* root)
+{
+    return detail::invertTree(root);
 }
 
 }
