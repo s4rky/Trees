@@ -31,9 +31,9 @@ private:
     
     bool testLowestCommonAncestor();
     
-    bool testGetMaxDiameter();
+    bool testMaxDiameter();
     
-    bool getMaxPathSum();
+    bool testMaxPathSum();
     
     bool testInvertTree();
     
@@ -54,6 +54,7 @@ private:
     bool testMaxSumBST();
     
     bool testAllPathsThatSumTo();
-
     
+    bool testSmallestRootToLeafString();
+
 };

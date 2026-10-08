@@ -57,16 +57,9 @@ BinaryTree<T>::BinaryTree(const std::vector<std::optional<T>>& nodes)
 }
 
 template <typename T>
-const TreeNode<T>* BinaryTree<T>::getRoot() const
+TreeNode<T>* BinaryTree<T>::getRoot()
 {
     return root.get();
-}
-
-template <typename T>
-bool BinaryTree<T>::inTree(const TreeNode<T>* root) const
-{
-    auto found = nodeSet.find(root) != nodeSet.end();
-    return found;
 }
 
 template <typename T>
@@ -100,26 +93,6 @@ template <typename T>
 TreeNode<T>* BinaryTree<T>::getNode(const T& val) const
 {
     return search(root.get(), val).second;
-}
-
-
-template <typename T>
-TreeNode<T>* BinaryTree<T>::invertTree(TreeNode<T>* root)
-{
-    if (!root)
-    {
-        return nullptr;
-    }
-    std::swap(root->left, root->right);
-    invertTree(root->left.get());
-    invertTree(root->right.get());
-    return root;
-}
-
-template <typename T>
-void BinaryTree<T>::invertBinaryTree()
-{
-    invertTree(root.get());
 }
 
 template <typename T>
@@ -289,3 +262,4 @@ void BinaryTree<T>::remove(const T& val)
 template class BinaryTree<int>;
 template class BinaryTree<double>;
 template class BinaryTree<std::string>;
+template class BinaryTree<char>;

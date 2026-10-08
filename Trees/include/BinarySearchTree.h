@@ -10,23 +10,36 @@
 #include "BinaryTree.h"
 
 template <typename T>
-
 class BinarySearchTree
 {
 public:
-    BinarySearchTree() : root(nullptr);
+    BinarySearchTree() : root(nullptr) {};
     
     /**
-     @brief Does a check to see if nodes is a valid BST as vector input. If it isn't do not build the BST.
-     @param nodes The input vector to construct the BST
+     @brief Builds the BST from a vectoral input.
+     @details Uses insert() method to handle all logic.
      */
     BinarySearchTree(const std::vector<std::optional<T>>& nodes);
     
+    /**
+     @brief Public API to insert into BST
+     */
+    TreeNode<T>* insertIntoBST(TreeNode<T>* root, T val);
+    
+    /**
+     @brief Public API to delete from BST
+     */
+    TreeNode<T>* deleteFromBST(TreeNode<T>* root, T val);
     
     
 private:
+    
+    TreeNode<T>* insert(TreeNode<T>* root, T val);
+    
+    TreeNode<T>* remove(TreeNode<T>* root, T val);
+    
+    
     std::unique_ptr<TreeNode<T>> root;
-    BinaryTree tree;
 };
 
 

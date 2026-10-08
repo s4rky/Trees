@@ -32,7 +32,7 @@ public:
     /**
      @brief Returns reference to the root of the Binary Tree.
      */
-    const TreeNode<T>* getRoot() const;
+    TreeNode<T>* getRoot();
     
     /**
      @brief Searches for a value in a Binary Tree. If found, returns pointer to the value. If not found, return nullptr.
@@ -44,11 +44,6 @@ public:
      @brief Uses search() and returns the pointer to a specific value being searched for in the Binary Tree.
      */
     TreeNode<T>* getNode(const T& val) const;
-    
-    /**
-     @brief Public API to invert the Binary Tree.
-     */
-    void invertBinaryTree();
     
     /**
      @brief Insert value into the Binary Tree. The goal is to create a perfect and complete Binary Tree, hence why the insertion is done through a BFS.
@@ -80,7 +75,6 @@ public:
      */
     const int getNumLeaves() const;
     
-    
     /**
      @brief Return true if Binary Tree is empty.
      */
@@ -94,16 +88,6 @@ private:
     std::string treeToString(const std::vector<T>& levelOrderVector) const;
     
     /**
-     @brief Returns true if node is present in the Binary Tree.
-     */
-    bool inTree(const TreeNode<T>* root) const;
-    
-    /**
-     @brief Inverts the Binary Tree. If called an even number of times, the original tree structure will be preserved.
-     */
-    TreeNode<T>* invertTree(TreeNode<T>* root);
-    
-    /**
      @brief Helper to clear the Binary Tree.
      */
     void deleteAllExceptRoot(TreeNode<T>* root);
@@ -111,12 +95,6 @@ private:
     
     // Member Variables
     std::unique_ptr<TreeNode<T>> root;
-    
-    /**
-     @Todo DELETE REDUNDANT MEMBER VARS!!!
-     */
     std::vector<T> levelOrderVector;
     std::set<const TreeNode<T>*> nodeSet;
-    int maxDiam;
-    T maxPathSum;
 };

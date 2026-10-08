@@ -144,6 +144,7 @@ namespace detail
         preorderTraversal(root->left.get(), preorderVec);
         preorderTraversal(root->right.get(), preorderVec);
     }
+
     template <typename T>
     void postorderTraversal(const TreeNode<T>* root, std::vector<const TreeNode<T>*> &postorderVec)
     {
@@ -208,40 +209,43 @@ namespace detail
             curr = curr->right.get();
         }
     }
-    
-    template <typename T>
-    void morrisInorderTraversal(TreeNode<T>* root, std::vector<const TreeNode<T>*> &inorderVec)
-    {
-        TreeNode<T>* curr = root;
-        
-        while (curr)
-        {
-            if (!curr->left)
-            {
-                inorderVec.push_back(curr);
-                curr = curr->right;
-            }
-            else
-            {
-                TreeNode<T>* IP = curr->left;
-                while (IP->right && IP->right != curr)
-                {
-                    IP = IP->right;
-                }
-                if (!IP->right)
-                {
-                    IP->right = curr;
-                    curr = curr->left;
-                }
-                else
-                {
-                    IP->right = nullptr;
-                    inorderVec.push_back(curr);
-                    curr = curr->right;
-                }
-            }
-        }
-    }
+
+// KEY NOTE:
+// THE FOLLOWING CODE DOES NOT WORK WITH MY ARCHITECTURAL DECISION OF USING UNIQUE_PTR
+//    template <typename T>
+//    void morrisInorderTraversal(TreeNode<T>* root, std::vector<const TreeNode<T>*> &inorderVec)
+//    {
+//        TreeNode<T>* curr = root;
+//        
+//        while (curr)
+//        {
+//            if (!curr->left)
+//            {
+//                inorderVec.push_back(curr);
+//                curr = curr->right.get();
+//            }
+//            else
+//            {
+//                TreeNode<T>* IP = curr->left.get();
+//                while (IP->right && IP->right.get() != curr)
+//                {
+//                    IP = IP->right;
+//                }
+//                if (!IP->right)
+//                {
+//                    IP->right = curr;
+//                    curr = curr->left;
+//                }
+//                else
+//                {
+//                    IP->right = nullptr;
+//                    inorderVec.push_back(curr);
+//                    curr = curr->right;
+//                }
+//            }
+//        }
+//    }
+
     template <typename T>
     BSTcandidate<T> getMaxSum(const TreeNode<T>* root, T& maxSum)
     {
@@ -257,7 +261,7 @@ namespace detail
         if (isValid)
         {
             T totalSum = root->val + left.sum + right.sum;
-            maxSum = max(maxSum, totalSum);
+            maxSum = std::max(maxSum, totalSum);
             return {
                 true,
                 std::min(root->val, left.minVal),
@@ -299,6 +303,7 @@ namespace detail
         }
             
     }
+
     template <typename T>
     TreeNode<T>* invertTree(TreeNode<T>* root)
     {
@@ -310,6 +315,37 @@ namespace detail
         invertTree(root->right.get());
         std::swap(root->left, root->right);
         return root;
+    }
+    
+    inline std::string getSmallestRootToLeafString(const TreeNode<char>* root, std::string& path)
+    {
+        if (!root->left && !root->right)
+        {
+            return std::string(1, static_cast<char>('a' + root->val));
+        }
+        std::string left = "";
+        std::string right = "";
+        path.insert(0, 1, static_cast<char>('a' + root->val));
+        
+        if (root->left)
+        {
+            left = getSmallestRootToLeafString(root->left.get(), path);
+        }
+        if (root->right)
+        {
+            right = getSmallestRootToLeafString(root->right.get(), path);
+        }
+        
+        auto front = path[0];
+        path.erase(0,1);
+        left += front;
+        right += front;
+        
+        if (left.size() == 1 || right.size() == 1)
+        {
+            return (left.size() > right.size()) ? left : right;
+        }
+        return (left + path < right + path) ? left : right;
     }
 }
 
@@ -331,19 +367,17 @@ const TreeNode<T>* lowestCommonAncestor(const TreeNode<T>* root, const TreeNode<
 {
     if (!root)
     {
-//        std::cout << "Querying a null root" << std::endl;
         return nullptr;
     }
     const TreeNode<T>* LCA = detail::findLowestCommonAncestor(root, node1, node2);
     
     if (!LCA)
     {
-//        std::cout << "(At least 1 of) The queried nodes are invalid" << std::endl;
-//        std::cout << "Returning Root..." << std::endl;
         return root;
     }
     return LCA;
 }
+
 template <typename T>
 const int getMaxDiameter(const TreeNode<T>* root)
 {
@@ -438,20 +472,23 @@ void flattenBinaryTree(TreeNode<T>* root)
     detail::flatten(root);
 }
 
-template <typename T>
-std::vector<T> morrisInorder(TreeNode<T>* root)
-{
-    std::vector<const TreeNode<T>*> inorderVec;
-    detail::morrisInorderTraversal(root, inorderVec);
-    
-    std::vector<T> values;
-    
-    for (const auto it: inorderVec)
-    {
-        values.push_back(it->val);
-    }
-    return values;
-}
+// KEY NOTE:
+// THE FOLLOWING CODE DOES NOT WORK WITH MY ARCHITECTURAL DECISION OF USING UNIQUE_PTR
+
+//template <typename T>
+//std::vector<T> morrisInorder(TreeNode<T>* root)
+//{
+//    std::vector<const TreeNode<T>*> inorderVec;
+//    detail::morrisInorderTraversal(root, inorderVec);
+//    
+//    std::vector<T> values;
+//    
+//    for (const auto it: inorderVec)
+//    {
+//        values.push_back(it->val);
+//    }
+//    return values;
+//}
 
 template <typename T>
 T getMaxSum(const TreeNode<T>* root)
@@ -479,6 +516,12 @@ template <typename T>
 TreeNode<T>* invert(TreeNode<T>* root)
 {
     return detail::invertTree(root);
+}
+
+std::string smallestRootToLeafString(const TreeNode<char>* root)
+{
+    std::string path = "";
+    return detail::getSmallestRootToLeafString(root, path);
 }
 
 }

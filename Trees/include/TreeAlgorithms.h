@@ -69,6 +69,8 @@ T maxSumBST(const TreeNode<T>* root);
 template <typename T>
 T allPathsThatSumTo(const TreeNode<T>* root, const int targetSum);
 
+inline std::string smallestRootToLeafString(const TreeNode<char>* root);
+
 } // namespace TreeAlgos
 
 #include "../source/TreeAlgorithms.tpp"
