@@ -18,12 +18,14 @@
 
 namespace BinarySearchTreeAlgos
 {
-template <typename T>
 
+template <typename T>
 bool isValidTopDown(const TreeNode<T>* root);
 
+template <typename T>
 bool isValidBottomUp(const TreeNode<T>* root);
 
+template <typename T>
 bool isValidInorderCheck(const TreeNode<T>* root);
 
 } // namespace BinarySearchTreeAlgos

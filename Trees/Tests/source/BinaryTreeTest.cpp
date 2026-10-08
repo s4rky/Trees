@@ -17,6 +17,7 @@
 #include <optional>
 
 using namespace std;
+using namespace TreeAlgos;
 
 template <typename T>
 bool BinaryTreeTest<T>::testTreeCreation()
@@ -139,6 +140,7 @@ bool BinaryTreeTest<T>::testInvertBinaryTree()
     BinaryTree<int> Bt_1(treeTest);
     // 1. see representation of original
     auto inorderOriginal = TreeAlgos::inorder(Bt_1.getRoot());
+    
     
     // 2. invert and invert again. after store as new representation
     auto Bt_1_inverted = TreeAlgos::invert(Bt_1.getRoot());

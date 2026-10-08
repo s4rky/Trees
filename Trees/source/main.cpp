@@ -10,9 +10,11 @@
 #include "BinaryTree.h"
 #include "TreeAlgorithms.h"
 #include "BinaryTreeTest.h"
+#include "BinarySearchTreeTest.h"
 #include <vector>
 #include <string>
 #include <optional>
+
 
 using namespace std;
 
@@ -20,6 +22,10 @@ int main(int argc, const char * argv[])
 {
     BinaryTreeTest<int> test;
     test.executeTest();
+    
+    BinarySearchTreeTest<int> test2;
+    test2.executeTest();
+    
     
     return 0;
 }

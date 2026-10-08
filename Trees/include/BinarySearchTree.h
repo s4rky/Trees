@@ -19,24 +19,29 @@ public:
      @brief Builds the BST from a vectoral input.
      @details Uses insert() method to handle all logic.
      */
-    BinarySearchTree(const std::vector<std::optional<T>>& nodes);
+    BinarySearchTree(const std::vector<const T&> nodes);
     
     /**
      @brief Public API to insert into BST
      */
-    TreeNode<T>* insertIntoBST(TreeNode<T>* root, T val);
+    void insertIntoBST(std::unique_ptr<TreeNode<T>>& root, const T& val);
     
     /**
      @brief Public API to delete from BST
      */
-    TreeNode<T>* deleteFromBST(TreeNode<T>* root, T val);
+    TreeNode<T>* deleteFromBST(TreeNode<T>* root, const T& val);
+    
+    /**
+     @brief Public API to pretty print the BST
+     */
+    inline std::string prettyPrintBST(TreeNode<T>* root);
     
     
 private:
     
-    TreeNode<T>* insert(TreeNode<T>* root, T val);
+    void insert(std::unique_ptr<TreeNode<T>>& root, const T& val);
     
-    TreeNode<T>* remove(TreeNode<T>* root, T val);
+    TreeNode<T>* remove(TreeNode<T>* root, const T& val);
     
     
     std::unique_ptr<TreeNode<T>> root;
